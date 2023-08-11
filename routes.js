@@ -1,17 +1,43 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var express = require("express");
-var router = express.Router();
-var products = [
+const express = __importStar(require("express"));
+const router = express.Router();
+let products = [
     { id: 1, nama: 'Indomie', hpp: 5000, untung: 20, hargaJual: 6250, stok: 10, kategori: 'Makanan' },
     { id: 2, nama: 'Teh Pucuk', hpp: 3000, untung: 20, hargaJual: 3750, stok: 20, kategori: 'Minuman' },
 ];
-router.get('/products', function (req, res) {
+router.get('/', (req, res) => {
+    res.json("Try /api/products to get products");
+});
+router.get('/products', (req, res) => {
     res.json(products);
 });
-router.get('/products/:nama', function (req, res) {
-    var nama = String(req.params.nama);
-    var product = products.find(function (p) { return p.nama === nama; });
+router.get('/products/:nama', (req, res) => {
+    const nama = String(req.params.nama);
+    const product = products.find((p) => p.nama === nama);
     if (product) {
         res.json(product);
     }
@@ -19,8 +45,8 @@ router.get('/products/:nama', function (req, res) {
         res.status(404).json({ message: 'Produk tidak ditemukan' });
     }
 });
-router.post('/products', function (req, res) {
-    var newProduk = {
+router.post('/products', (req, res) => {
+    const newProduk = {
         id: products.length + 1,
         nama: req.body.nama,
         hpp: req.body.hpp,
@@ -32,12 +58,12 @@ router.post('/products', function (req, res) {
     products.push(newProduk);
     res.status(201).json(newProduk);
 });
-router.put('/products/:id', function (req, res) {
-    var id = parseInt(req.params.id);
-    var productIndex = products.findIndex(function (p) { return p.id === id; });
+router.put('/products/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const productIndex = products.findIndex((p) => p.id === id);
     if (productIndex !== -1) {
-        var updatedProduct = {
-            id: id,
+        const updatedProduct = {
+            id,
             nama: req.body.name,
             hpp: req.body.price,
             untung: req.body.untung,
@@ -66,11 +92,11 @@ router.put('/products/:id', function (req, res) {
 //         res.status(404).json({ message: 'Produk tidak ditemukan' });
 //     }
 //     });  
-router.delete('/products/:id', function (req, res) {
-    var id = parseInt(req.params.id);
-    var productIndex = products.findIndex(function (p) { return p.id === id; });
+router.delete('/products/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const productIndex = products.findIndex((p) => p.id === id);
     if (productIndex !== -1) {
-        var deletedProduct = products.splice(productIndex, 1)[0];
+        const deletedProduct = products.splice(productIndex, 1)[0];
         res.json(deletedProduct);
     }
     else {
